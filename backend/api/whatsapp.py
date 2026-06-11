@@ -36,16 +36,14 @@ async def receive_message(request: Request):
         change = entry["changes"][0]["value"]
         message = change["messages"][0]
     except (KeyError, IndexError):
-        # Not a message event (e.g. status update) — acknowledge and ignore
         return {"status": "ok"}
 
-    sender_phone = message["from"]          # e.g. "201004538215"
+    sender_phone = message["from"]
     text = message.get("text", {}).get("body", "")
 
     if not text:
         return {"status": "ok"}
 
-    # Use the sender's phone number as the session ID
     if sender_phone not in session_manager.sessions:
         session_manager.sessions[sender_phone] = Session(sender_phone)
 
