@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Response, Request
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Response
 
-from core.session_manager import session_manager
+from backend.core.session_manager import session_manager
 
 router = APIRouter()
 
