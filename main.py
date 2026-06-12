@@ -1,4 +1,5 @@
 import logging
+import re
 
 import requests
 from fastapi import FastAPI, HTTPException, Request
@@ -64,7 +65,7 @@ async def _handle_whatsapp(body: dict):
     if interaction is None:
         return {"status": "error"}
 
-    _send_whatsapp_message(sender_id, interaction.agent_reply)
+    _send_whatsapp_message(sender_id, md_to_whatsapp(interaction.agent_reply))
     return {"status": "ok", "reply": interaction.agent_reply}
 
 
@@ -138,3 +139,12 @@ def _send_instagram_message(recipient_id: str, text: str):
     if not r.ok:
         logger.error("Failed to send Instagram message: %s %s", r.status_code, r.text)
 
+
+def md_to_whatsapp(text: str) -> str:
+    text = re.sub(r"^#{1,6}\s+", "", text, flags=re.MULTILINE)
+    text = re.sub(r"\*\*(.+?)\*\*", r"*\1*", text)
+    text = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"_\1_", text)
+    text = re.sub(r"^\s*[-*]\s+", "• ", text, flags=re.MULTILINE)
+    text = re.sub(r"^[-_*]{3,}$", "", text, flags=re.MULTILINE)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
