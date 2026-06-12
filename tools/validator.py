@@ -30,7 +30,7 @@ class Validator:
                 raise ValueError("The 'end_chat' field in agent response must be a boolean if present.")
             return data
         except json.JSONDecodeError:
-            # LLM didn't return JSON — treat the raw text as the reply
+            # LLM didn't return JSON, treat the raw text as the reply
             return {"reply": response, "end_chat": False}
         
 
