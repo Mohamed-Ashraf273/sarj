@@ -54,7 +54,7 @@ async def receive_message(request: Request):
         session_manager.update_session_title(sender_phone, text)
         session_manager.save_message(sender_phone, interaction)
 
-        if interaction.transfer:
+        if interaction.end_chat:
             session_manager.close_session(sender_phone)
     except Exception:
         logger.exception("Failed to process message from %s", sender_phone)

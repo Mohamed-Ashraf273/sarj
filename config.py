@@ -8,6 +8,11 @@ class Config:
     PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
     WEBHOOK_VERIFY_TOKEN = os.getenv("WEBHOOK_VERIFY_TOKEN")
     WHATSAPP_API_URL = f"https://graph.facebook.com/v25.0/{os.getenv('PHONE_NUMBER_ID')}/messages"
+    SARJ_WEB_URL = "https://www.sarj.ae/"
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", None)
+    ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", None)
+    MODEL = os.getenv("MODEL", "claude-sonnet-4-6")
+    TEMPERATURE = float(os.getenv("TEMPERATURE", 0.7))
 
 
 config = Config()
