@@ -61,7 +61,7 @@ async def receive_message(request: Request):
         return {"status": "error"}
 
     _send_whatsapp_message(sender_phone, interaction.agent_reply)
-    return {"status": "ok"}
+    return {"status": "ok", "reply": interaction.agent_reply}
 
 
 def _send_whatsapp_message(to: str, text: str):
