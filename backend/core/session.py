@@ -26,9 +26,11 @@ class Session:
         history = self._build_history()
         response = self.agent.invoke(message, history=history)
         response = response.strip()
-        if response.startswith("```"):
-            response = response.split("\n", 1)[-1]
-            response = response.rsplit("```", 1)[0].strip()
+        if "```" in response:
+            import re
+            match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", response, re.DOTALL)
+            if match:
+                response = match.group(1).strip()
         data = validator.validate_agent_response(response)
         reply = data.get("reply", "Sorry, I didn't understand that.")
         end_chat = data.get("end_chat", False)
