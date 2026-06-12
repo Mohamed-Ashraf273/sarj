@@ -30,6 +30,7 @@ async def verify_webhook(request: Request):
 @router.post("")
 async def receive_message(request: Request):
     body = await request.json()
+    logger.info("Webhook POST received: %s", body)
 
     try:
         entry = body["entry"][0]
