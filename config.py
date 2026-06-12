@@ -13,6 +13,7 @@ class Config:
     ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", None)
     MODEL = os.getenv("MODEL", "claude-sonnet-4-6")
     TEMPERATURE = float(os.getenv("TEMPERATURE", 0.7))
+    CRON_SECRET = os.getenv("CRON_SECRET", "change-me")
 
 
 config = Config()

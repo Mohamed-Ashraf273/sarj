@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Response, Header, HTTPException
 
 from backend.core.session_manager import session_manager
+from config import config
 
 router = APIRouter()
 
@@ -28,3 +29,12 @@ async def create_session():
 @router.get("/sessions")
 async def list_sessions():
     return {"sessions": session_manager.list_sessions()}
+
+
+@router.post("/sessions/cleanup")
+async def cleanup_sessions(x_cron_secret: str = Header(None)):
+    if x_cron_secret != config.CRON_SECRET:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    count = len(session_manager.sessions)
+    session_manager.sessions.clear()
+    return {"status": "ok", "cleared": count}
